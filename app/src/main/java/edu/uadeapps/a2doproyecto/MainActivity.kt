@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             _2doProyectoTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    fichaEstudiante(Modifier.padding(innerPadding))
+                    FichaEstudiante(Modifier.padding(innerPadding))
                 }
             }
         }
@@ -38,17 +38,28 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun fichaEstudiante(modifier: Modifier = Modifier) {
+fun FichaEstudiante(modifier: Modifier = Modifier) {
     val nombre = "Fernando"
     val edad = 26
     val promedio = 7
     val cursaProgramacion = true
+
+    val anioProximo = edad + 1
+
+    val documento: String = "42649174"
+
+    val materias: Int = 5
+    val ciudad: String = "Buenos Aires"
 
     Column ( modifier = modifier){
         Text("Nombre: $nombre")
         Text("Edad: $edad")
         Text("Promedio: $promedio")
         Text("Cursa progamación?: $cursaProgramacion")
+        Text("Año próximo: $anioProximo")
+        Text("Documento: $documento")
+        Text("Materias: $materias")
+        Text("Ciudad: $ciudad")
     }
 }
 
