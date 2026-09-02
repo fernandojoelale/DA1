@@ -22,7 +22,17 @@ class MainActivity : ComponentActivity() {
         setContent {
             _2doProyectoTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    FichaEstudiante(Modifier.padding(innerPadding))
+                    //FichaEstudiante(Modifier.padding(innerPadding))
+                    Column(modifier = Modifier.padding(innerPadding)) {
+                        datoEstudiante("Nombre", "Fernando")
+                        datoEstudiante("Carrera", "Sistemas")
+                        datoEstudiante("Anio", "Cuarto")
+
+                        Text(
+                            text = descripcionEdad(26)
+                        )
+                    }
+
                 }
             }
         }
@@ -38,35 +48,56 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun FichaEstudiante(modifier: Modifier = Modifier) {
-    val nombre = "Fernando"
-    val edad = 26
-    val promedio = 7
-    val cursaProgramacion = true
-
-    val anioProximo = edad + 1
-
-    val documento: String = "42649174"
-
-    val materias: Int = 5
-    val ciudad: String = "Buenos Aires"
-
-    Column ( modifier = modifier){
-        Text("Nombre: $nombre")
-        Text("Edad: $edad")
-        Text("Promedio: $promedio")
-        Text("Cursa progamación?: $cursaProgramacion")
-        Text("Año próximo: $anioProximo")
-        Text("Documento: $documento")
-        Text("Materias: $materias")
-        Text("Ciudad: $ciudad")
-    }
+fun datoEstudiante (etiqueta: String, valor: String) {
+    Text(
+        text = "$etiqueta: $valor"
+    )
 }
+
+fun descripcionEdad(edad: Int) : String{
+    return "Edad: $edad años"
+
+}
+
+
+//@Composable
+//fun FichaEstudiante(modifier: Modifier = Modifier) {
+//   val nombre = "Fernando"
+//  val edad = 26
+//  val promedio = 7
+//  val cursaProgramacion = true
+
+//  val anioProximo = edad + 1
+
+//  val documento: String = "42649174"
+
+//  val materias: Int = 5
+//  val ciudad: String = "Buenos Aires"
+
+  //  Column ( modifier = modifier){
+    //    Text("Nombre: $nombre")
+    //    Text("Edad: $edad")
+    //    Text("Promedio: $promedio")
+     //   Text("Cursa progamación?: $cursaProgramacion")
+      //  Text("Año próximo: $anioProximo")
+       // Text("Documento: $documento")
+        //Text("Materias: $materias")
+        //Text("Ciudad: $ciudad")
+    //}
+//}
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     _2doProyectoTheme {
         Greeting("Android")
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun datoEstudiantePreview() {
+    _2doProyectoTheme {
+        datoEstudiante("Nombre", "Fernando")
     }
 }
