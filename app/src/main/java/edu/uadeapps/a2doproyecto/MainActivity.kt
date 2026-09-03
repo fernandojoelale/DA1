@@ -7,12 +7,16 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import edu.uadeapps.a2doproyecto.ui.theme._2doProyectoTheme
 
 class MainActivity : ComponentActivity() {
@@ -23,14 +27,27 @@ class MainActivity : ComponentActivity() {
             _2doProyectoTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     //FichaEstudiante(Modifier.padding(innerPadding))
-                    Column(modifier = Modifier.padding(innerPadding)) {
-                        datoEstudiante("Nombre", "Fernando")
-                        datoEstudiante("Carrera", "Sistemas")
-                        datoEstudiante("Anio", "Cuarto")
+                    Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
+
+//                        datoEstudiante("Nombre", "Fernando")
+                        //                      datoEstudiante("Carrera", "Sistemas")
+//                        datoEstudiante("Anio", "Cuarto")
 
                         Text(
-                            text = descripcionEdad(26)
+                            text = "Perfil",
+                            fontSize = 28.sp,
+                            modifier = Modifier.padding(bottom = 16.dp)
                         )
+
+                        Row() {
+                            datoEstudiante("Nombre", "Fernando ")
+                            datoEstudiante("Anio", "Cuarto")
+                        }
+
+                        Button(onClick = {}) {
+                            Text("Boton")
+                        }
+
                     }
 
                 }
@@ -48,6 +65,9 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
+
+
+//@Composable
 fun datoEstudiante (etiqueta: String, valor: String) {
     Text(
         text = "$etiqueta: $valor"
@@ -98,6 +118,6 @@ fun GreetingPreview() {
 @Composable
 fun datoEstudiantePreview() {
     _2doProyectoTheme {
-        datoEstudiante("Nombre", "Fernando")
+        //datoEstudiante("Nombre", "Fernando")
     }
 }
