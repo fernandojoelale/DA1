@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,6 +14,11 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -20,91 +26,109 @@ import androidx.compose.ui.unit.sp
 import edu.uadeapps.a2doproyecto.ui.theme._2doProyectoTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
         setContent {
             _2doProyectoTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    //FichaEstudiante(Modifier.padding(innerPadding))
-                    Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
 
-//                        datoEstudiante("Nombre", "Fernando")
-                        //                      datoEstudiante("Carrera", "Sistemas")
-//                        datoEstudiante("Anio", "Cuarto")
+                Scaffold(
+                    modifier = Modifier.fillMaxSize()
+                ) { innerPadding ->
 
-                        Text(
-                            text = "Perfil",
-                            fontSize = 28.sp,
-                            modifier = Modifier.padding(bottom = 16.dp)
-                        )
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding)
+                            .padding(16.dp)
+                    ) {
 
-                        Row() {
-                            datoEstudiante("Nombre", "Fernando ")
-                            datoEstudiante("Anio", "Cuarto")
-                        }
-
-                        Button(onClick = {}) {
-                            Text("Boton")
-                        }
+                        Contador()
 
                     }
-
                 }
             }
         }
     }
 }
 
+
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
+fun Greeting(
+    name: String,
+    modifier: Modifier = Modifier
+) {
     Text(
         text = "Hello $name!",
         modifier = modifier
     )
 }
 
+
 @Composable
-
-
-//@Composable
-fun datoEstudiante (etiqueta: String, valor: String) {
+fun datoEstudiante(
+    etiqueta: String,
+    valor: String
+) {
     Text(
         text = "$etiqueta: $valor"
     )
 }
 
-fun descripcionEdad(edad: Int) : String{
-    return "Edad: $edad años"
 
+fun descripcionEdad(edad: Int): String {
+    return "Edad: $edad años"
 }
 
 
-//@Composable
-//fun FichaEstudiante(modifier: Modifier = Modifier) {
-//   val nombre = "Fernando"
-//  val edad = 26
-//  val promedio = 7
-//  val cursaProgramacion = true
+@Composable
+fun Contador() {
 
-//  val anioProximo = edad + 1
+    var contador by remember {
+        mutableStateOf(0)
+    }
 
-//  val documento: String = "42649174"
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
 
-//  val materias: Int = 5
-//  val ciudad: String = "Buenos Aires"
+        Text(
+            text = "Valor: $contador",
+            fontSize = 24.sp
+        )
 
-  //  Column ( modifier = modifier){
-    //    Text("Nombre: $nombre")
-    //    Text("Edad: $edad")
-    //    Text("Promedio: $promedio")
-     //   Text("Cursa progamación?: $cursaProgramacion")
-      //  Text("Año próximo: $anioProximo")
-       // Text("Documento: $documento")
-        //Text("Materias: $materias")
-        //Text("Ciudad: $ciudad")
-    //}
-//}
+        Button(
+            onClick = {
+                contador++
+            }
+        ) {
+            Text("Contador + 1")
+        }
+
+        Button(
+            onClick = {
+                if (contador > 0) {
+                    contador--
+                }
+            }
+        ) {
+            Text("Contador - 1")
+        }
+
+        Button(
+            onClick = {
+                contador = 0
+            }
+        ) {
+            Text("Reiniciar")
+        }
+    }
+}
+
 
 @Preview(showBackground = true)
 @Composable
@@ -114,10 +138,11 @@ fun GreetingPreview() {
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
 fun datoEstudiantePreview() {
     _2doProyectoTheme {
-        //datoEstudiante("Nombre", "Fernando")
+        // datoEstudiante("Nombre", "Fernando")
     }
 }
