@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -45,7 +46,8 @@ class MainActivity : ComponentActivity() {
                             .padding(16.dp)
                     ) {
 
-                        Contador()
+                        //Contador()
+                        PantallaEdad()
 
                     }
                 }
@@ -129,6 +131,59 @@ fun Contador() {
     }
 }
 
+@Composable
+fun PantallaEdad() {
+    var nombre by remember { mutableStateOf("")}
+    var edadTexto by remember { mutableStateOf("") }
+
+    OutlinedTextField(
+        value = nombre,
+        onValueChange = { nombre = it },
+        label = { Text("Ingrese Nombre") }
+    )
+
+    OutlinedTextField(
+        value = edadTexto,
+        onValueChange = { edadTexto = it },
+        label = { Text("Ingrese Edad") }
+    )
+
+    val edadNumero = edadTexto.toIntOrNull()
+
+    var resultado by remember { mutableStateOf("") }
+
+
+    Button(onClick = {
+        if (edadNumero != null) {
+            resultado = ClasificadorEdad(edadNumero, nombre)
+        }
+
+        else {
+            resultado = "Para la edad, ingrese un número entero"
+        }
+    }) {
+        Text("Evaluar")
+
+    }
+
+    Text(resultado)
+
+
+}
+
+
+fun ClasificadorEdad(edad: Int, nombre:String): String {
+
+    if (edad < 0)
+        return "Por favor, ingrese un número válido"
+
+    if (edad >= 18) {
+        return "$nombre es mayor de edad"
+    }
+    else
+        return "$nombre es menor de edad"
+
+}
 
 @Preview(showBackground = true)
 @Composable
