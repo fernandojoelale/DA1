@@ -47,7 +47,8 @@ class MainActivity : ComponentActivity() {
                     ) {
 
                         //Contador()
-                        PantallaEdad()
+                        //PantallaEdad()
+                        Calculadora()
 
                     }
                 }
@@ -171,7 +172,66 @@ fun PantallaEdad() {
 
 }
 
+@Composable
+fun Calculadora() {
+    var a by remember { mutableStateOf("")}
+    var b by remember { mutableStateOf("")}
 
+    OutlinedTextField(
+        value = a,
+        onValueChange = { a = it },
+        label = { Text("Ingrese un número") }
+    )
+
+    OutlinedTextField(
+        value = b,
+        onValueChange = { b = it },
+        label = { Text("Ingrese otro número") }
+    )
+
+    val numeroA = a.toDoubleOrNull() ?: 0.0
+    val numeroB = b.toDoubleOrNull() ?: 0.0
+    var resultado by remember { mutableStateOf(0.0) }
+
+    Button(onClick =  {resultado = (Calcular(numeroA,numeroB, "Sumar"))}
+    ) {
+        Text("Sumar")
+    }
+
+    Button(onClick =  {resultado = (Calcular(numeroA,numeroB, "Restar"))}
+    ) {
+        Text("Restar")
+    }
+
+    Button(onClick =  {resultado = (Calcular(numeroA,numeroB, "Multiplicar"))}
+    ) {
+        Text("Multiplicar")
+    }
+
+    Button (onClick = {resultado = 0.0}) {
+        Text("Limpiar")
+    }
+
+
+    Text("Resultado: $resultado")
+
+}
+
+fun Calcular(a: Double, b: Double, operacion: String): Double {
+    if (operacion == "Sumar") {
+        return (a+b)
+    }
+
+    if (operacion == "Restar") {
+        return (a-b)
+    }
+
+    if (operacion == "Multiplicar") {
+        return (a*b)
+    }
+
+    return 0.0
+}
 fun ClasificadorEdad(edad: Int, nombre:String): String {
 
     if (edad < 0)
