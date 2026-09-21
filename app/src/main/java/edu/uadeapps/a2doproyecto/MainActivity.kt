@@ -21,9 +21,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import android.util.Log
 import edu.uadeapps.a2doproyecto.ui.theme._2doProyectoTheme
 
 class MainActivity : ComponentActivity() {
@@ -193,7 +196,9 @@ fun Calculadora() {
     val numeroB = b.toDoubleOrNull() ?: 0.0
     var resultado by remember { mutableStateOf(0.0) }
 
-    Button(onClick =  {resultado = (Calcular(numeroA,numeroB, "Sumar"))}
+    Row (Modifier.padding(top= 10.dp)) {
+    Button(onClick =  {Log.d("CALCULADORA","Se ejectuó SUMAR");
+        resultado = (Calcular(numeroA,numeroB, "Sumar"))}
     ) {
         Text("Sumar")
     }
@@ -207,13 +212,22 @@ fun Calculadora() {
     ) {
         Text("Multiplicar")
     }
+    }
 
     Button (onClick = {resultado = 0.0}) {
         Text("Limpiar")
     }
 
 
-    Text("Resultado: $resultado")
+        Text("Resultado ", Modifier.fillMaxWidth().padding(top= 20.dp), textAlign = TextAlign.Center )
+
+        Text("$resultado",
+            Modifier.fillMaxWidth().padding(top = 40.dp),
+
+        textAlign = TextAlign.Center,
+        fontSize = 56.sp,
+        fontWeight = FontWeight.Bold,
+            )
 
 }
 
