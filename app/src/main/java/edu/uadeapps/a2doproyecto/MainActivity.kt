@@ -27,6 +27,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import android.util.Log
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Checkbox
+import androidx.compose.ui.graphics.Color
 import edu.uadeapps.a2doproyecto.ui.theme._2doProyectoTheme
 
 class MainActivity : ComponentActivity() {
@@ -51,7 +55,17 @@ class MainActivity : ComponentActivity() {
 
                         //Contador()
                         //PantallaEdad()
-                        Calculadora()
+                        //Calculadora()
+
+                        val materias = listOf(
+                            Materia("Programacion I", 1, true),
+                            Materia("Analisis Matematico II", 2, true),
+                            Materia("Desarrollo de Aplicaciones I", 3, false),
+                            Materia("Programacion III", 2, true),
+                            Materia("Ingenieria en Software", 5, false)
+                        )
+
+                        MateriasEnPantalla(materias)
 
                     }
                 }
@@ -86,6 +100,117 @@ fun datoEstudiante(
 
 fun descripcionEdad(edad: Int): String {
     return "Edad: $edad años"
+}
+
+
+
+data class Materia(
+    val nombre: String,
+    val anio: Int,
+    val aprobada: Boolean
+)
+
+@Composable
+fun MateriasEnPantalla(materias: List<Materia>) {
+
+    var soloAprobadas by remember { mutableStateOf(false) }
+
+    Row {
+        Text("Filtrar solo aprobadas")
+
+        Checkbox(
+            checked = soloAprobadas,
+            onCheckedChange = {
+                soloAprobadas = it
+            }
+        )
+
+    }
+
+    val countMaterias =
+        if (soloAprobadas) {
+            materias.filter { it.aprobada }.size
+        }
+        else {
+            materias.size
+        }
+
+    Row {
+        Text ("Cantidad de materias: $countMaterias")
+    }
+
+    val materiasFiltradas = if (soloAprobadas == true) {
+        materias.filter { it.aprobada }
+    } else {
+        materias
+    }
+
+    Column(
+        modifier = Modifier.padding(16.dp)
+    ) {
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp)
+        ) {
+            Text(
+                "Nombre",
+                modifier = Modifier.weight(2f),
+                fontWeight = FontWeight.Bold
+            )
+
+            Text(
+                "Año",
+                modifier = Modifier.weight(1f),
+                fontWeight = FontWeight.Bold
+            )
+
+            Text(
+                "Estado",
+                modifier = Modifier.weight(1f),
+                fontWeight = FontWeight.Bold
+            )
+        }
+
+        LazyColumn {
+            items(materiasFiltradas) { materia ->
+                MateriaItem(materia)
+            }
+        }
+    }
+}
+
+@Composable
+fun MateriaItem(materia: Materia) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
+    ) {
+        Text(
+            materia.nombre,
+            modifier = Modifier.weight(2f)
+        )
+
+        Text(
+            materia.anio.toString(),
+            modifier = Modifier.weight(1f)
+        )
+
+        Text(
+            text = if (materia.aprobada) {
+                "Aprobada"
+            } else {"No aprobada"
+            },
+            color = if (materia.aprobada) {
+                Color.Green
+            } else {
+                Color.Red
+            },
+            modifier = Modifier.weight(1f)
+        )
+    }
 }
 
 
