@@ -30,6 +30,9 @@ import android.util.Log
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.TextField
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.graphics.Color
 import edu.uadeapps.a2doproyecto.ui.theme._2doProyectoTheme
 
@@ -57,15 +60,17 @@ class MainActivity : ComponentActivity() {
                         //PantallaEdad()
                         //Calculadora()
 
-                        val materias = listOf(
-                            Materia("Programacion I", 1, true),
-                            Materia("Analisis Matematico II", 2, true),
-                            Materia("Desarrollo de Aplicaciones I", 3, false),
-                            Materia("Programacion III", 2, true),
-                            Materia("Ingenieria en Software", 5, false)
-                        )
+//                        val materias = listOf(
+//                            Materia("Programacion I", 1, true),
+//                            Materia("Analisis Matematico II", 2, true),
+//                            Materia("Desarrollo de Aplicaciones I", 3, false),
+//                            Materia("Programacion III", 2, true),
+//                            Materia("Ingenieria en Software", 5, false)
+//                        )
+//
+//                        MateriasEnPantalla(materias)
 
-                        MateriasEnPantalla(materias)
+                        TareasApp()
 
                     }
                 }
@@ -73,6 +78,155 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+
+@Composable
+fun TareasApp () {
+    InputTareas()
+}
+
+@Composable
+fun InputTareas() {
+
+    var tarea by remember { mutableStateOf("")}
+    val tareas = remember { mutableStateListOf<Tarea>() }
+
+    OutlinedTextField(
+        value = tarea,
+        onValueChange = { tarea = it },
+        label = { Text("Ingrese tarea") }
+    )
+
+    Button(onClick = { tareas.add(Tarea(tarea, false)) }) {
+        Text("Agregar")
+    }
+
+    Button(
+        onClick = { tareas.clear() }
+    ) {
+        Text("Borrar todas")
+    }
+
+
+    TareasList(tareas)
+
+
+}
+
+data class Tarea(
+    val desc: String,
+    val completada: Boolean
+)
+
+
+
+@Composable
+fun TareasList(
+    tareas: MutableList<Tarea>,
+    modifier: Modifier = Modifier
+) {
+    var seleccionadas by remember { mutableStateOf(setOf<Tarea>()) }
+
+    Column(
+        modifier = modifier.fillMaxSize()
+    ) {
+
+        HorizontalDivider(
+            modifier = Modifier.padding(vertical = 16.dp)
+        )
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp)
+        ) {
+            Text(
+                "Tarea",
+                modifier = Modifier.weight(2f),
+                fontWeight = FontWeight.Bold
+            )
+
+            Text(
+                "Estado",
+                modifier = Modifier.weight(1f),
+                fontWeight = FontWeight.Bold
+            )
+        }
+
+        LazyColumn(
+            modifier = Modifier.weight(1f)
+        ) {
+            items(tareas) { tarea ->
+
+                TareaItem(
+                    tarea = tarea,
+                    seleccionada = tarea in seleccionadas,
+                    onSeleccionar = { marcada ->
+                        seleccionadas = if (marcada) {
+                            seleccionadas + tarea
+                        } else {
+                            seleccionadas - tarea
+                        }
+                    }
+                )
+            }
+        }
+
+        Button(
+            onClick = {
+                tareas.removeAll(seleccionadas)
+                seleccionadas = emptySet()
+            }
+        ) {
+            Text("Borrar Seleccionadas")
+        }
+
+        Button(
+            onClick = {
+                for (tarea in seleccionadas) {
+                    val indice = tareas.indexOf(tarea)
+                    tareas[indice] = tarea.copy(completada = true)
+                }
+                seleccionadas = emptySet()
+            }
+        ) {
+            Text("Marcar completada")
+        }
+
+
+    }
+}
+
+@Composable
+fun TareaItem(
+    tarea: Tarea,
+    seleccionada: Boolean,
+    onSeleccionar: (Boolean) -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
+    ) {
+
+        Checkbox(
+            checked = seleccionada,
+            onCheckedChange = onSeleccionar
+        )
+
+        Text(
+            tarea.desc,
+            modifier = Modifier.weight(2f)
+        )
+
+        Text(
+            text = if (tarea.completada) "Completada" else "No Completada",
+            color = if (tarea.completada) Color.Green else Color.Red,
+            modifier = Modifier.weight(1f)
+        )
+    }
+}
+
 
 
 @Composable
@@ -88,10 +242,7 @@ fun Greeting(
 
 
 @Composable
-fun datoEstudiante(
-    etiqueta: String,
-    valor: String
-) {
+fun datoEstudiante(etiqueta: String, valor: String) {
     Text(
         text = "$etiqueta: $valor"
     )
