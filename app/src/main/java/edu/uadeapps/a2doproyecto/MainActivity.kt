@@ -88,6 +88,16 @@ fun TareasApp () {
 @Composable
 fun InputTareas() {
 
+    Column(
+        modifier = Modifier
+            .padding(16.dp)
+    ) {
+        Text(
+            text = "Mis Tareas",
+            fontSize = 24.sp
+        )
+    }
+
     var tarea by remember { mutableStateOf("")}
     val tareas = remember { mutableStateListOf<Tarea>() }
 
@@ -172,26 +182,42 @@ fun TareasList(
             }
         }
 
-        Button(
-            onClick = {
-                tareas.removeAll(seleccionadas)
-                seleccionadas = emptySet()
+        Row() {
+            Row() {
+
             }
-        ) {
-            Text("Borrar Seleccionadas")
+
+            Button(
+                onClick = {
+                    tareas.removeAll(seleccionadas)
+                    seleccionadas = emptySet()
+                }
+            ) {
+                Text("Borrar Seleccionadas")
+            }
+
+            Button(
+                onClick = {
+                    for (tarea in seleccionadas) {
+                        val indice = tareas.indexOf(tarea)
+                        tareas[indice] = tarea.copy(completada = true)
+                    }
+                    seleccionadas = emptySet()
+                }
+            ) {
+                Text("Marcar completada")
+            }
         }
 
-        Button(
-            onClick = {
-                for (tarea in seleccionadas) {
-                    val indice = tareas.indexOf(tarea)
-                    tareas[indice] = tarea.copy(completada = true)
-                }
-                seleccionadas = emptySet()
-            }
-        ) {
-            Text("Marcar completada")
+        val countTareas =
+
+                tareas.size
+
+        Row {
+            Text ("Cantidad de tareas: $countTareas")
         }
+
+
 
 
     }
