@@ -1,5 +1,6 @@
 package edu.uadeapps.a2doproyecto
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -31,9 +32,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Surface
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import edu.uadeapps.a2doproyecto.ui.theme._2doProyectoTheme
 
 class MainActivity : ComponentActivity() {
@@ -88,6 +91,7 @@ fun TareasApp () {
 @Composable
 fun InputTareas() {
 
+
     Column(
         modifier = Modifier
             .padding(16.dp)
@@ -108,13 +112,13 @@ fun InputTareas() {
     )
 
     Button(onClick = { tareas.add(Tarea(tarea, false)) }) {
-        Text("Agregar")
+        Text(stringResource(R.string.agregar))
     }
 
     Button(
         onClick = { tareas.clear() }
     ) {
-        Text("Borrar todas")
+        Text(stringResource(R.string.borrartodas))
     }
 
 
@@ -131,10 +135,7 @@ data class Tarea(
 
 
 @Composable
-fun TareasList(
-    tareas: MutableList<Tarea>,
-    modifier: Modifier = Modifier
-) {
+fun TareasList(tareas: MutableList<Tarea>, modifier: Modifier = Modifier) {
     var seleccionadas by remember { mutableStateOf(setOf<Tarea>()) }
 
     Column(
@@ -151,13 +152,13 @@ fun TareasList(
                 .padding(bottom = 8.dp)
         ) {
             Text(
-                "Tarea",
+                stringResource(R.string.tarea),
                 modifier = Modifier.weight(2f),
                 fontWeight = FontWeight.Bold
             )
 
             Text(
-                "Estado",
+                stringResource(R.string.estado),
                 modifier = Modifier.weight(1f),
                 fontWeight = FontWeight.Bold
             )
@@ -224,11 +225,7 @@ fun TareasList(
 }
 
 @Composable
-fun TareaItem(
-    tarea: Tarea,
-    seleccionada: Boolean,
-    onSeleccionar: (Boolean) -> Unit
-) {
+fun TareaItem(tarea: Tarea, seleccionada: Boolean, onSeleccionar: (Boolean) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -344,7 +341,7 @@ fun MateriasEnPantalla(materias: List<Materia>) {
             )
 
             Text(
-                "Estado",
+                stringResource(R.string.estado),
                 modifier = Modifier.weight(1f),
                 fontWeight = FontWeight.Bold
             )
@@ -575,5 +572,22 @@ fun GreetingPreview() {
 fun datoEstudiantePreview() {
     _2doProyectoTheme {
         // datoEstudiante("Nombre", "Fernando")
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun NormalPreview() {
+    InputTareas()
+}
+
+@Preview(
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun DarkPreview() {
+    _2doProyectoTheme(darkTheme = true) {
+        InputTareas()
     }
 }
